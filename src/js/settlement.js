@@ -1,21 +1,247 @@
 // 결산정리 분개 연습 기능 구현
 
 document.addEventListener('DOMContentLoaded', () => {
+  // 계정코드-계정과목 매핑 객체 (일반전표와 동일하게 확장)
+  const accountCodeMap = {
+  '단기매매증권': '107',
+    '현금': '101',
+    '당좌예금': '102',
+    '보통예금': '103',
+    '기타제예금': '104',
+    '정기예금': '105',
+    '정기적금': '106',
+    '유가증권': '107',
+    '외상매출금': '108',
+    '받을어음': '110',
+    '공사미수금': '112',
+    '단기대여금': '114',
+    '미수금': '120',
+    '선급금': '131',
+    '선급미용': '133',
+    '가지급금': '134',
+    '부가세대급금': '135',
+    '선납세금': '136',
+    '종업원대여금': '137',
+    '전도금': '138',
+    '상품': '146',
+    '제품': '150',
+    '완성건물': '152',
+    '원재료': '153',
+    '건설용지': '165',
+    '가설재': '166',
+    '재공품': '169',
+    '장기성예금': '176',
+    '특정예금': '177',
+    '투자유가증권': '178',
+    '장기대여금': '179',
+    '임차보증금': '188',
+    '전세권': '189',
+    '기타보증금': '190',
+    '부도어음': '193',
+    '전화가입권': '195',
+    '토지': '201',
+    '건물': '202',
+    '구축물': '204',
+    '기계장치': '206',
+    '차량운반구': '208',
+    '공구와기구': '210',
+    '비품': '212',
+    '건설중인자산': '214',
+    '영업권': '231',
+    '특허권': '232',
+    '상표권': '233',
+    '실용신안권': '234',
+    '의장권': '235',
+    '면허권': '236',
+    '환율조정차': '238',
+    '개발비': '239',
+    '소프트웨어': '240',
+    '외상매입금': '251',
+    '지급어음': '252',
+    '미지급금': '253',
+    '예수금': '254',
+    '부가세예수금': '255',
+    '당좌차월': '256',
+    '가수금': '257',
+    '예수보증금': '258',
+    '선수금': '259',
+    '단기차입금': '260',
+    '미지급세금': '261',
+    '미지급비용': '262',
+    '선수수익': '263',
+    '사채(社債)': '291',
+    '장기차입금': '293',
+    '외화장기차입금': '305',
+    '자본금': '331',
+    '자본잉여금': '341',
+    '이익준비금': '351',
+    '기업합리화적립금': '352',
+    '제준비금': '36*',
+    '임의적립금': '355',
+    '이월이익잉여금': '375',
+    '상품매출': '401',
+    '제품매출': '404',
+    '공사수입금': '407',
+    '매출': '412',
+    '상품매출원가': '451',
+    '제품매출원가': '455',
+    '매입': '460',
+    '임원급여': '801',
+    '급료': '802',
+    '상여금': '803',
+    '제수당': '804',
+    '잡금': '805',
+    '복리후생비': '811',
+    '여비교통비': '812',
+    '접대비': '813',
+    '통신비': '814',
+    '수도광열비': '815',
+    '전력비': '816',
+    '세금과공과금': '817',
+    '감가상각비': '818',
+    '지급임차료': '819',
+    '수선비': '820',
+    '보험료': '821',
+    '차량유지비': '822',
+    '연구개발비': '823',
+    '운반비': '824',
+    '교육훈련비': '825',
+    '도서인쇄비': '826',
+    '회의비': '827',
+    '포장비': '828',
+    '사무용품비': '829',
+    '소모품비': '830',
+    '지급수수료': '831',
+    '보관료': '832',
+    '광고선전비': '833',
+    '판매촉진비': '834',
+    '대손상각비': '835',
+    '기밀비': '836',
+    '건물관리비': '837',
+    '수출제비용': '838',
+    '판매수수료': '839',
+    '무형고정자산상각': '840',
+    '견본비': '842',
+    '잡비': '848',
+    '창업비': '8**',
+    '이자수익': '901',
+    '유가증권이자': '902',
+    '배당금수익': '903',
+    '수입임대료': '904',
+    '유가증권처분이익': '906',
+    '외환차익': '907',
+    '수입수수료': '909',
+    '관세환급금(*)': '911',
+    '판매장려금': '912',
+    '유형자산처분이익': '914',
+    '투자자산처분이익': '915',
+    '국고보조금(*)': '917',
+    '잡이익': '930',
+    '이자비용': '931',
+    '외환차손': '932',
+    '기부금': '933',
+    '유가증권처분손실': '938',
+    '재고자산감모손실': '939',
+    '재고자산평가손실': '940',
+    '유형자산처분손실': '950',
+    '투자자산처분손실': '951',
+    '잡손실': '960',
+    '법인세등': '998',
+    '소득세등': '999',
+    '원재료비': '501',
+    '부재료비': '502',
+    '급여': '503',
+    '임금': '504',
+    '상여금': '505',
+    '제수당': '506',
+    '잡금': '507',
+    '퇴직급여': '510',
+    '복리후생비': '511',
+    '여비교통비': '512',
+    '접대비': '513',
+    '통신비': '514',
+    '가스수도료': '515',
+    '전력비': '516',
+    '세금과공과금': '517',
+    '감가상각비': '518',
+    '지급임차료': '519',
+    '수선비': '520'
+  };
+
+  // 계정코드/계정과목 자동매핑 바인딩
+  function bindAccountAutoCode() {
+    document.querySelectorAll('#settlement-table input[name="account"]').forEach(accountInput => {
+      accountInput.addEventListener('input', function() {
+        const codeInput = accountInput.parentElement.previousElementSibling.querySelector('input[name="code"]');
+        const subject = accountInput.value.trim();
+        const code = accountCodeMap[subject];
+        codeInput.value = code ? code : '';
+      });
+    });
+    document.querySelectorAll('#settlement-table input[name="code"]').forEach(codeInput => {
+      codeInput.addEventListener('input', function() {
+        const accountInput = codeInput.parentElement.nextElementSibling.querySelector('input[name="account"]');
+        const code = codeInput.value.trim();
+        const foundAccount = Object.keys(accountCodeMap).find(key => accountCodeMap[key] === code);
+        accountInput.value = foundAccount ? foundAccount : '';
+      });
+    });
+  }
+  bindAccountAutoCode();
+  // 줄 추가 버튼 바인딩 (중복 선언 완전 제거)
+  var addRowBtn = document.getElementById('add-row');
+  if (addRowBtn) {
+    addRowBtn.addEventListener('click', () => {
+      setTimeout(() => {
+        bindAccountAutoCode();
+        document.querySelectorAll('#settlement-table input[name="debit"], #settlement-table input[name="credit"]').forEach(input => {
+          input.removeEventListener('input', updateJournalSums);
+          input.addEventListener('input', updateJournalSums);
+        });
+        updateJournalSums();
+      }, 50);
+    });
+  }
   // 금액 입력 시 합계 자동 계산
   function updateJournalSums() {
     let debitSum = 0;
     let creditSum = 0;
     document.querySelectorAll('#settlement-table input[name="debit"]').forEach(input => {
-      const val = input.value.replace(/,/g, '');
+      let val = input.value.replace(/,/g, '');
       if (val) debitSum += Number(val);
+      // 입력값에 자동 콤마
+      if (val && !isNaN(val)) {
+        input.value = Number(val).toLocaleString('ko-KR');
+      }
     });
     document.querySelectorAll('#settlement-table input[name="credit"]').forEach(input => {
-      const val = input.value.replace(/,/g, '');
+      let val = input.value.replace(/,/g, '');
       if (val) creditSum += Number(val);
+      // 입력값에 자동 콤마
+      if (val && !isNaN(val)) {
+        input.value = Number(val).toLocaleString('ko-KR');
+      }
     });
     document.getElementById('debit-sum').textContent = debitSum.toLocaleString('ko-KR');
     document.getElementById('credit-sum').textContent = creditSum.toLocaleString('ko-KR');
   }
+
+  // 금액 입력란에 + 키 입력 시 00 자동 입력
+  function bindAmountPlusShortcut() {
+    document.querySelectorAll('#settlement-table input[name="debit"], #settlement-table input[name="credit"]').forEach(input => {
+      input.addEventListener('keydown', function(e) {
+        if (e.key === '+') {
+          e.preventDefault();
+          const start = input.selectionStart;
+          const end = input.selectionEnd;
+          const value = input.value;
+          input.value = value.slice(0, start) + '00' + value.slice(end);
+          input.setSelectionRange(start + 2, start + 2);
+        }
+      });
+    });
+  }
+  bindAmountPlusShortcut();
 
   // 금액 입력 시 합계 업데이트 이벤트 바인딩
   document.querySelectorAll('#settlement-table input[name="debit"], #settlement-table input[name="credit"]').forEach(input => {
@@ -23,7 +249,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // 줄 추가 시에도 이벤트 바인딩 필요 (줄추가 버튼)
-  const addRowBtn = document.getElementById('add-row');
+  // (중복 선언 제거, 위에서 이미 선언됨)
   if (addRowBtn) {
     addRowBtn.addEventListener('click', () => {
       setTimeout(() => {
@@ -31,7 +257,9 @@ document.addEventListener('DOMContentLoaded', () => {
           input.removeEventListener('input', updateJournalSums);
           input.addEventListener('input', updateJournalSums);
         });
+        bindAmountPlusShortcut();
         updateJournalSums();
+        bindAccountAutoCode();
       }, 50);
     });
   }

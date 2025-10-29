@@ -80,12 +80,20 @@ document.addEventListener('DOMContentLoaded', () => {
     let debitSum = 0;
     let creditSum = 0;
     document.querySelectorAll('#journal-table input[name="debit"]').forEach(input => {
-      const val = input.value.replace(/,/g, '');
+      let val = input.value.replace(/,/g, '');
       if (val) debitSum += Number(val);
+      // 입력값에 자동 콤마
+      if (val && !isNaN(val)) {
+        input.value = Number(val).toLocaleString('ko-KR');
+      }
     });
     document.querySelectorAll('#journal-table input[name="credit"]').forEach(input => {
-      const val = input.value.replace(/,/g, '');
+      let val = input.value.replace(/,/g, '');
       if (val) creditSum += Number(val);
+      // 입력값에 자동 콤마
+      if (val && !isNaN(val)) {
+        input.value = Number(val).toLocaleString('ko-KR');
+      }
     });
     document.getElementById('debit-sum').textContent = debitSum.toLocaleString('ko-KR');
     document.getElementById('credit-sum').textContent = creditSum.toLocaleString('ko-KR');
@@ -298,6 +306,81 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     });
   }
+
+// 계정코드/계정과목 자동완성 기능 추가
+function enableAccountCodeAutoFill() {
+  document.querySelectorAll('#journal-table input[name="code"]').forEach(input => {
+    input.addEventListener('input', function() {
+      const code = input.value.trim();
+      const subjectInput = input.parentElement.nextElementSibling.querySelector('input[name="account"]');
+      if (accountCodeMap[code]) {
+        subjectInput.value = accountCodeMap[code];
+      } else {
+        subjectInput.value = '';
+      }
+    });
+  });
+}
+function enableAccountSubjectAutoFill() {
+  document.querySelectorAll('#journal-table input[name="account"]').forEach(input => {
+    input.addEventListener('input', function() {
+      const subject = input.value.trim();
+      const codeInput = input.parentElement.previousElementSibling.querySelector('input[name="code"]');
+      const foundCode = Object.keys(accountCodeMap).find(code => accountCodeMap[code] === subject);
+      if (foundCode) {
+        codeInput.value = foundCode;
+      }
+    });
+  });
+}
+document.addEventListener('DOMContentLoaded', function() {
+  // 계정코드/계정과목 자동완성 기능 추가
+
+  // 금액 입력란에 + 키 입력 시 00 자동 입력
+  function bindAmountPlusShortcut() {
+    document.querySelectorAll('#journal-table input[name="debit"], #journal-table input[name="credit"]').forEach(input => {
+      input.addEventListener('keydown', function(e) {
+        if (e.key === '+') {
+          e.preventDefault();
+          const start = input.selectionStart;
+          const end = input.selectionEnd;
+          const value = input.value;
+          input.value = value.slice(0, start) + '00' + value.slice(end);
+          input.setSelectionRange(start + 2, start + 2);
+        }
+      });
+    });
+  }
+  bindAmountPlusShortcut();
+  function bindAccountAutoCode() {
+    document.querySelectorAll('#journal-table input[name="account"]').forEach(accountInput => {
+      accountInput.addEventListener('input', function() {
+        const codeInput = accountInput.parentElement.previousElementSibling.querySelector('input[name="code"]');
+        const code = Object.keys(accountCodeMap).find(key => accountCodeMap[key] === accountInput.value.trim());
+        codeInput.value = code ? code : '';
+      });
+    });
+    document.querySelectorAll('#journal-table input[name="code"]').forEach(codeInput => {
+      codeInput.addEventListener('input', function() {
+        const accountInput = codeInput.parentElement.nextElementSibling.querySelector('input[name="account"]');
+        const code = codeInput.value.trim();
+        accountInput.value = accountCodeMap[code] ? accountCodeMap[code] : '';
+      });
+    });
+  }
+  bindAccountAutoCode();
+  // 줄 추가 시에도 바인딩 필요
+  const addRowBtn = document.getElementById('add-row');
+  if (addRowBtn) {
+    addRowBtn.addEventListener('click', () => {
+      setTimeout(() => {
+        bindAccountAutoCode();
+        bindAmountPlusShortcut();
+        updateJournalSums();
+      }, 50);
+    });
+  }
+});
   // 계정코드-계정과목 매핑 객체 (CSV에서 자동 변환)
 const accountCodeMap = {
   "101": "현금",
@@ -306,7 +389,7 @@ const accountCodeMap = {
   "104": "기타제예금",
   "105": "정기예금",
   "106": "정기적금",
-  "107": "유가증권",
+  "107": "단기매매증권",
   "108": "외상매출금",
   "110": "받을어음",
   "112": "공사미수금",

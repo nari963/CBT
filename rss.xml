@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+  <channel>
+    <title>CBT 회계 연습 사이트</title>
+    <link>https://cbt00.netlify.app/</link>
+    <description>전산회계1급, 전산세무2급, 실전 분개 및 용어 연습, OX 퀴즈 제공</description>
+    <language>ko</language>
+    <item>
+      <title>기출문제풀이</title>
+      <link>https://cbt00.netlify.app/quiz.html</link>
+      <description>최신 기출문제와 해설 제공</description>
+      <pubDate>2025-10-29</pubDate>
+    </item>
+    <item>
+      <title>OX퀴즈</title>
+      <link>https://cbt00.netlify.app/ox.html</link>
+      <description>회계 용어 및 개념 OX 퀴즈</description>
+      <pubDate>2025-10-29</pubDate>
+    </item>
+    <item>
+      <title>용어맞추기</title>
+      <link>https://cbt00.netlify.app/term.html</link>
+      <description>회계 용어 4지선다형 연습</description>
+      <pubDate>2025-10-29</pubDate>
+    </item>
+    <item>
+      <title>일반전표문제연습</title>
+      <link>https://cbt00.netlify.app/general.html</link>
+      <description>일반 분개 실전 연습</description>
+      <pubDate>2025-10-29</pubDate>
+    </item>
+    <item>
+      <title>매입매출전표연습</title>
+      <link>https://cbt00.netlify.app/purchase.html</link>
+      <description>매입매출 분개 실전 연습</description>
+      <pubDate>2025-10-29</pubDate>
+    </item>
+    <item>
+      <title>결산정리</title>
+      <link>https://cbt00.netlify.app/settlement.html</link>
+      <description>결산 분개 실전 연습</description>
+      <pubDate>2025-10-29</pubDate>
+    </item>
+  </channel>
+</rss>
