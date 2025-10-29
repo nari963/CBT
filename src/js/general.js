@@ -160,9 +160,39 @@ document.addEventListener('DOMContentLoaded', () => {
   const resultBox = document.getElementById('result-box');
 
   function showProblem(idx) {
-    const p = problems[currentPart][idx];
-    problemText.textContent = p.text;
-    resultBox.textContent = '';
+  const p = problems[currentPart][idx];
+  document.getElementById('problem-number').textContent = (idx+1) + '.';
+  problemText.textContent = p.text;
+  resultBox.textContent = '';
+  let answerBtn = document.getElementById('show-answer-btn');
+  if (!answerBtn) {
+    answerBtn = document.createElement('button');
+    answerBtn.id = 'show-answer-btn';
+    answerBtn.textContent = '정답 보기';
+    answerBtn.style.margin = '12px 0 0 0';
+    answerBtn.style.fontSize = '1.1em';
+    answerBtn.style.padding = '8px 18px';
+    answerBtn.style.borderRadius = '8px';
+    answerBtn.style.background = '#1976d2';
+    answerBtn.style.color = '#fff';
+    answerBtn.style.border = 'none';
+    answerBtn.style.cursor = 'pointer';
+    answerBtn.style.display = 'inline-block';
+    document.getElementById('problem-box-card').appendChild(answerBtn);
+  }
+  answerBtn.style.display = 'inline-block';
+  answerBtn.onclick = function() {
+    let answerText = '';
+    if (p.debit && p.credit) {
+      answerText += '[정답 분개]\n';
+      answerText += '(차) ' + p.debit.map(d => d.account + ' ' + d.amount.toLocaleString('ko-KR')).join(', ') + '\n';
+      answerText += '(대) ' + p.credit.map(c => c.account + ' ' + c.amount.toLocaleString('ko-KR')).join(', ');
+    } else {
+      answerText = '[정답 데이터 없음]';
+    }
+    resultBox.textContent = answerText;
+    answerBtn.style.display = 'none';
+  };
     // 테이블형 UI에서는 별도 입력란 초기화 필요 없음
   }
 
@@ -486,4 +516,39 @@ function enableAccountSubjectAutoFill() {
   enableJournalTableNavigation();
   enableAccountCodeAutoFill();
   enableAccountSubjectAutoFill();
+
+  // 페이지네이션 렌더링 및 동작
+function renderPagination() {
+  const problemsArr = problems[currentPart];
+  const total = problemsArr.length;
+  const box = document.getElementById('pagination-box');
+  if (!box || total < 2) { box.innerHTML = ''; return; }
+  let html = '';
+  html += `<button id="prev-btn" ${current === 0 ? 'disabled' : ''}>이전</button>`;
+  for (let i = 0; i < total; i++) {
+    html += `<button class="page-btn" data-idx="${i}" ${i === current ? 'style=\"font-weight:bold;background:#e9ecef;\"' : ''}>${i+1}</button>`;
+  }
+  html += `<button id="next-btn" ${current === total-1 ? 'disabled' : ''}>다음</button>`;
+  box.innerHTML = html;
+  document.getElementById('prev-btn').onclick = () => { if (current > 0) { current--; showProblem(current); renderPagination(); } };
+  document.getElementById('next-btn').onclick = () => { if (current < total-1) { current++; showProblem(current); renderPagination(); } };
+  Array.from(document.getElementsByClassName('page-btn')).forEach(btn => {
+    btn.onclick = () => { current = Number(btn.dataset.idx); showProblem(current); renderPagination(); };
+  });
+}
+// 문제 표시 시 페이지네이션도 갱신
+const origShowProblem = showProblem;
+showProblem = function(idx) {
+  origShowProblem(idx);
+  renderPagination();
+};
+// 파트 변경 시 페이지네이션 초기화
+partSelect.addEventListener('change', function() {
+  currentPart = partSelect.value;
+  current = 0;
+  showProblem(current);
+  renderPagination();
+});
+// 초기 렌더링
+renderPagination();
 });
