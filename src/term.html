@@ -66,10 +66,218 @@
   </header>
   <main>
     <div class="term-flex" style="display:flex; gap:2rem; align-items:flex-start;">
-      <div class="term-container term-left-fixed" style="flex:1;">
-        <h2>용어 맞추기</h2>
-        <div id="term-box"></div>
+      <div class="term-container term-left-fixed" style="flex:1; min-width:0;">
+        <h2 style="margin-bottom:2rem;">용어 맞추기 연습 (4지 선다형)</h2>
+        <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:1.2rem;">
+          <span id="term-page-info" style="font-size:1.1em; color:#1976d2; font-weight:bold;">1 / 1</span>
+          <div>
+            <button id="term-prev-btn" class="term-btn" style="background:#e9ecef; color:#333; margin-right:8px;">이전</button>
+            <button id="term-next-btn" class="term-btn" style="background:#e9ecef; color:#333;">다음</button>
+          </div>
+        </div>
+        <div class="term-question" id="term-problem-text">문제가 여기에 표시됩니다.</div>
+        <div id="term-choices" style="display:flex; flex-direction:column; gap:1rem; margin:2rem 0;"></div>
         <div id="term-result" class="term-result"></div>
+      </div>
+      <div style="min-width:220px;">
+        <h3 style="margin-bottom:0.5rem;">풀이 결과</h3>
+        <table id="term-status-table" style="width:100%; border-collapse:collapse; font-size:0.95rem;">
+          <thead>
+            <tr><th style="border-bottom:1px solid #ccc;">번호</th><th style="border-bottom:1px solid #ccc;">결과</th></tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+    <script>
+    // 용어와 정의 데이터
+    const termProblems = [
+          { term: '소득세비용(법인세비용)', definition: '개인(법인)의 소득에 대한 세금' },
+          { term: '이자비용', definition: '차입금,사채에 대한 이자지급 비용' },
+          { term: '외환차손', definition: '외화자산 회수,외화부채 상환시 환율변동에 따른 차손' },
+          { term: '외환환산손실', definition: '결산시 화폐성외화자산 또는 부채평가기 환율변동에 따른 차손' },
+          { term: '기타의대손상각비', definition: '매출채권 이외의 채권에서 발생하는 대손상각비(대여금,미수금 등)' },
+          { term: '기부금', definition: '사회단체나 종교단체 등에 납부한 성금' },
+          { term: '매출채권처분손실', definition: '받을어음의 할인시 발생하는 할인료' },
+          { term: '단기매매증권처분손실', definition: '단기매매증권을 장부가액 이하로 처분하였을 때 발생하는 손실' },
+          { term: '단기매매증권평가손실', definition: '결산시 단기매매증권의 공정가액이 장부가액보다 적을 때의 손실' },
+          { term: '재고자산감모손실', definition: '재고자산의 실제수량잉 파손 등의 이유로 장부상수량보다 적은경우 발생하는 손실' },
+          { term: '유형자산처분손실', definition: '유현자산을 장부가액 이하로 처분했을 때 발생하는 손실' },
+          { term: '잡손실', definition: '영업이외의 활동에서 생기는 기타 적은 손실' },
+          { term: '재해손실', definition: '화재,수해 등 재해로 인한 손실' },
+          { term: '(종업원)급여', definition: '종업원에게 지급되는 월급 등 인건비' },
+          { term: '퇴직급여', definition: '종업원 퇴직시 지급되는 급여' },
+          { term: '복리후생비', definition: '종업원의 복리후생을 위하여 지출하는 비용' },
+          { term: '여비교통비', definition: '버스.택시요금을 지급하거나 버스카드 충전 및 승차권구입비용,출장비' },
+          { term: '접대비', definition: '영업의 목적으로 거래처와의 관계유지를 위한 지출' },
+          { term: '통신비', definition: '우표,엽서 등 을 구입하거나 전화요금,pc통신,인터넷요금 등' },
+          { term: '수도광열비', definition: '전기요금.수도요금.가스요금 ,난방유 유류대금 등' },
+          { term: '세금과공과', definition: '재산세,자동차세,면허세,상공회의소회비,적십자회비 등' },
+          { term: '감가상각비', definition: '결산시 계상되는 유형자산 등의 가치감소분' },
+          { term: '임차료', definition: '타인의 건물이나 토지를 사용하면서 지급한 사용료' },
+          { term: '수선비', definition: '일반관리업무용 건물 ,비품등의 유형산의 수리를 위한 비용' },
+          { term: '보험료', definition: '보험에 가입하고 납부하는 보험료(화재보험료,차량보험료,산재보험료 등)' },
+          { term: '차량유지비', definition: '회사차량의 유지.보수에 관련된 비용(주유비,주차비,통행료)' },
+          { term: '연구비', definition: '연구단계에서 발생된 비용' },
+          { term: '경상개발비', definition: '개발단계에서 발생된 비용 중 자산성을 충족하지 못한 비용' },
+          { term: '운반비', definition: '상품.제품 매출시 지급한 운임' },
+          { term: '교육훈련비', definition: '종업원교육훈련에 관련된 비용-외부기관 실시하는 교육참가,세미나,자체교육비 등' },
+          { term: '도서인쇄비', definition: '도장,고무인,각종문서및 서류의복사,사원수첩,달력,연하장,각종 업무용 도서구입비,신문,잡지,정기간행물 구독비 등' },
+          { term: '소모품비', definition: '업무활동과 관련하여 각종소모성 비품의 구입을 위해 지출한 비용' },
+          { term: '수수료비용', definition: '용역을 제공받고 지급하는 수수료(은행,부동산중개료,보증수수료,제증명발급비용 등)' },
+          { term: '광고선전비', definition: '불특정다수인을 대상으로 제품등의 판매촉진을 위해 지출되는 비용' },
+          { term: '대손상각비', definition: '결산시 계상되는 대손예상액과 매출채권 회수불능액' },
+          { term: '잡비', definition: '금액적 중요성이 없는 비용. 오물,분뇨수거비 등' },
+          { term: '상품매출원가', definition: '판매된 상품의 취득원가(기초상품재고액+당기상품매입액-기말상품재고액)' },
+          { term: '제품매출원가', definition: '판매된 제품의 제조원가(기초제품재고액+당기제품제조원가-기말제품재고액)' },
+          { term: '상품매출', definition: '상품 판매시 발생하는 수익' },
+          { term: '제품매출', definition: '제품 판매시 발생하는 수익' },
+          { term: '영업외수익', definition: '영업 외의 활동에서 발생하는 수익' },
+          { term: '이자수익', definition: '단기대여금이나 은행예금에 대하여 받은 이자' },
+          { term: '배당금수익', definition: '소유주식에 대하여 받은 현금배당금' },
+          { term: '수수료수익', definition: '상품판매 등을 중개하고 받은 수수료' },
+          { term: '임대료', definition: '건물,토지 등을 빌려주고 받은 대가' },
+          { term: '단기매매증권처분이익', definition: '단기매매증권을 장부가액 이상으로 처분하였을 때 발생하는 이익' },
+          { term: '단기매매증권평가이익', definition: '결산시 단기매매증권의 공정가액이 장부가액보다 클 때의 이익' },
+          { term: '유형자산처분이익', definition: '유형자산을 장부가액 이상으로 처분하였을 때 발생하는 이익' },
+          { term: '외환차익', definition: '외화자산 회수 또는 외화부채 상환시의 환율변동 차익' },
+          { term: '외환환산이익', definition: '결산시 화폐성 외화자산 또는 외화부채 평가시 환율변동 차익' },
+          { term: '사채상환이익', definition: '사채 조기 상환시 발생하는 이익' },
+          { term: '잡이익', definition: '영업 이외의 활동에서 생기는 기타 적은 이익' },
+          { term: '보험수익', definition: '재해등으로 인해 손실된 자산에 대해 보험가입이 되어 있어서 보험금을 수령하게 될 때 보험금 수령액 전액을 보험수익으로 처리한다.' },
+          { term: '채무면제이익', definition: '차입금이나 매입채무 등을 면제 받았을 때 발생하는 이익' },
+          { term: '자산수증이익', definition: '자산을 무상으로 증여(수증,기부)받았을 때 발생하는 이익' },
+          { term: '자본금', definition: '자본금(발행주식수X1주 액면가액)—보통주,우선주로 구분' },
+          { term: '자본잉여금', definition: '주식발행초과금,감자차익,기타자본잉여금(자기주식처분이익)' },
+          { term: '자본조정', definition: '주식할인밣생차금,감자차손,자기주식처분손실,자기주식,배당건설이자,미교부주식배당금,주식매수선택권,출자전환채무 등' },
+          { term: '기타포괄손익누계액', definition: '매도가능증권평가손익,해외사업환산손익,현금흐름회피 파생상품평가손익' },
+          { term: '사채', definition: '장기적 자금조달을 위해 사채권을 발행하고 금전을 차입한 액면금액' },
+          { term: '장기차입금', definition: '상환기한이 1년 이상인 차입금' },
+          { term: '장기성매입채무', definition: '일반적인 상거래에서 발생한 장기의 외상매입금과 지급어음' },
+          { term: '퇴직급여충당부채', definition: '종업원 퇴직시 퇴직급여을 지급하기 위하여 설정하는 충당금' },
+          { term: '외상매입금', definition: '상품(원재료)를 매입하고 대금은 외상으로 한 경우(일반적인 상거래)' },
+          { term: '지급어음', definition: '상품(원재료)를 매입하고 약속어음을 발행 교부한 경우' },
+          { term: '매입채무', definition: '일반적인 상거래에서 발생한 외상매입금과 지급어음의 합계액' },
+          { term: '단기차입금', definition: '1년이내에 상환 조건으로 빌려온 금전' },
+          { term: '미지급금', definition: '일반적인 상거래 이외에서 발생한 외상거래' },
+          { term: '미지급비용', definition: '결산시 계상되는 비용의 미지급분 (미지급급여,미지급이자 등)' },
+          { term: '미지급배당금', definition: '주주에 대한 현금배당액' },
+          { term: '선수금', definition: '상품(제품)을 매출하기로 계약하고 계약금조로 미리 받은 금액' },
+          { term: '선수수익', definition: '결산시 계상되는 수익의 차기 이연분 (선수수수료,선수임대료 등)' },
+          { term: '예수금', definition: '종업원급여 지급시 원천징수하는 소득세, 건강보험료 등' },
+          { term: '보증금', definition: '임차보증금,영업보증금,전세권,회원권 등' },
+          { term: '이연법인세자산', definition: '차감할 일시적인 차이 등으로 인하여 미래 경감될 법인세부담액(유동자산으로 분류분 제외)' },
+          { term: '기타', definition: '장기매출채권,장기미수수익,장기미수금,장기선급비용 등' },
+            { term: '현금', definition: '한국은행 발행의 주화.지폐,통화대용증권(타인발행수표,자기앞수표) 등' },
+            { term: '당좌예금', definition: '은행과의 당좌계약에 의하여 당좌수표를 발행할 목적의 예금. 은행에 예입하고 자급사유가 발생되었을 때마다 현금을 대신하여 수표를 발행함.' },
+            { term: '보통예금', definition: '예입과 인출을 자유로이 할 목적의 보통예금이나 저축예금' },
+            { term: '현금성자산', definition: '취득시 만기 또는 상환일이 3개월이내인 채권,상환우선주,환매채 등' },
+            { term: '현금및현금성자산', definition: '현금,당좌예금,보통예금,현금성자산의 합계액' },
+            { term: '단기금융상품', definition: '수익증권,MMF 등 금융기관이 취급하는 정형화된 상품으로 단기적 자금운용목적으로 소유하거나 기한이 1년이내 도래하는 금융상품(저축성예금,정형화된 예금 등)' },
+            { term: '단기매매증권', definition: '단기간 내의 매매차익을 얻기 위하여 구입한 주식.채권 등 (시장성)' },
+            { term: '단기대여금', definition: '금전소비대차계약에 의해 상대방에게 대여한 금전에 대한 채권' },
+            { term: '외상매출금', definition: '상품(제품)을 매출하고 외상으로 한 경우(일반적인 상거래)' },
+            { term: '받을어음', definition: '상품(제품)을 매출하고 타인이 발행한 약속어음을 받은 경우' },
+            { term: '매출채권', definition: '일반적인 상거래에서 발생한 외상매출금과 받을어음의 합계액' },
+            { term: '미수금', definition: '일반적인 상거래 이외에서 발생한 외상거래' },
+            { term: '미수수익', definition: '결산시 계상되는 당기수익의 미수액(미수이자,미수임대료 등)' },
+            { term: '선급금', definition: '상품(원재료)을 매입하기로 계약하고 계약금조로 미리 지급한 금액' },
+            { term: '선급비용', definition: '결산시 계상되는 비용의 차리 이연분 (선급보험료, 선급이자 등)' },
+            { term: '상품', definition: '판매를 목적으로 외부에서 구입한 재화(도.소매업)' },
+            { term: '원재료', definition: '제품 제조를 목적으로 구입한 원료,재료 등' },
+            { term: '부재료', definition: '제품의 생산을 간접적으로 보조하기 위하여 소요되는 자산' },
+            { term: '재공품', definition: '제조를 위하여 생산공정(과정)에 있는 재화' },
+            { term: '반제품', definition: '미완성된 재공품의 상태로 판매하는 자산' },
+            { term: '제품', definition: '판매를 목적으로 기업내에서 제조한 재화' },
+            { term: '투자부동산', definition: '투자 목적으로 소유하고 있는 건물,토지 등' },
+            { term: '장기금융상품', definition: '만기일이 1년 이후에 도래하는 금융상품' },
+            { term: '장기투자증권', definition: '장기보유목적이거나 시장성 없는 유가증권 (매도가능증권,만기보유증권)' },
+            { term: '지분법적용투자주식', definition: '피투자회사에 유의적인 영향력(의결권이 있는 주식20%이상 보유)을 행사 할 수 있는 주식으로서 지분법으로 평가하는 유가증권' },
+            { term: '장기대여금', definition: '이자수익을 창출할 목적으로 타인에게 장기의 자금을 대여한 경우' },
+            { term: '토지', definition: '영업(생산)활동에 사용하는 토지' },
+            { term: '건물', definition: '영업(생산)활동에 사용하는 건물(사무실,창고,기숙사,공장,점포 등)' },
+            { term: '기계장치', definition: '영업(생산)활동에 사용하는 기계와 부속설비' },
+            { term: '차량운반구', definition: '영업(생산)활동에 사용하는 차량과 운반구' },
+            { term: '건설중인자산', definition: '유형자산의 건설을 위한 제비용,도급금액,취득한 기계(건설완공되기 직전까지의 모든 비용)' },
+            { term: '비품', definition: '영업용으로 사용하는 책상,의자,컴퓨터,응접세트,금고 등' },
+            { term: '영업권', definition: '우수한 경영진,뛰어난 판매조직,양호한 신용,원만한 노사관계,기업의 좋은 이미지 등 동종의 다른기업보다 특별히 유리한 무형의 자원을 말함(사업결합에 의해 취득한 영업권만 인정)' },
+            { term: '산업재산권', definition: '특허권,실용신안권,의장권,상표권 등의 법률적 권리' },
+            { term: '어업권', definition: '일정수면에서 어업을 경영할 수 있는 권리' },
+            { term: '개발비', definition: '신제품,신기술 등의 개발비용' }
+          ];
+          let termCurrent = 0;
+          let termStatus = Array(termProblems.length).fill('');
+          function shuffle(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+              const j = Math.floor(Math.random() * (i + 1));
+              [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+          }
+          function updatePageInfo() {
+            document.getElementById('term-page-info').textContent = `${termCurrent+1} / ${termProblems.length}`;
+          }
+          function updateStatusTable() {
+            const tbody = document.querySelector('#term-status-table tbody');
+            tbody.innerHTML = '';
+            termStatus.forEach((status, i) => {
+              const tr = document.createElement('tr');
+              tr.innerHTML = `<td style="text-align:center;">${i+1}</td><td style="text-align:center; color:${status==='정답'?'#1976d2':status==='오답'?'#d32f2f':'#333'}; font-weight:bold;">${status}</td>`;
+              tbody.appendChild(tr);
+            });
+          }
+          function showTermProblem(idx) {
+            updatePageInfo();
+            const problem = termProblems[idx];
+            document.getElementById('term-problem-text').textContent = `정의: ${problem.definition}`;
+            document.getElementById('term-result').textContent = '';
+            // 4지 선다 선택지 생성
+            let choices = [problem.term];
+            while (choices.length < 4) {
+              const rand = termProblems[Math.floor(Math.random() * termProblems.length)].term;
+              if (!choices.includes(rand)) choices.push(rand);
+            }
+            choices = shuffle(choices);
+            let choicesBox = document.getElementById('term-choices');
+            choicesBox.innerHTML = '';
+            choices.forEach(choice => {
+              const btn = document.createElement('button');
+              btn.textContent = choice;
+              btn.className = 'term-btn';
+              btn.style.textAlign = 'left';
+              btn.onclick = function() {
+                if (choice === problem.term) {
+                  document.getElementById('term-result').textContent = '정답입니다!';
+                  btn.style.background = '#1976d2';
+                  btn.style.color = '#fff';
+                  termStatus[idx] = '정답';
+                } else {
+                  document.getElementById('term-result').textContent = `오답입니다. 정답: ${problem.term}`;
+                  btn.style.background = '#d32f2f';
+                  btn.style.color = '#fff';
+                  termStatus[idx] = '오답';
+                }
+                Array.from(choicesBox.children).forEach(b => b.disabled = true);
+                updateStatusTable();
+              };
+              choicesBox.appendChild(btn);
+            });
+            updateStatusTable();
+          }
+          showTermProblem(termCurrent);
+          document.getElementById('term-prev-btn').onclick = function() {
+            if (termCurrent > 0) {
+              termCurrent--;
+              showTermProblem(termCurrent);
+            }
+          };
+          document.getElementById('term-next-btn').onclick = function() {
+            if (termCurrent < termProblems.length-1) {
+              termCurrent++;
+              showTermProblem(termCurrent);
+            }
+          };
+          </script>
       </div>
       <div style="min-width:180px;">
         <h3 style="margin-bottom:0.5rem;">풀이 결과</h3>

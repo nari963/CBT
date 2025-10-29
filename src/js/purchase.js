@@ -1,5 +1,44 @@
 // 매입매출전표연습용 JS 파일 (기본 구조)
 document.addEventListener('DOMContentLoaded', () => {
+  // 계정과목-코드 매핑 예시 (실제 코드로 확장 가능)
+  const accountCodeMap = {
+    '단기매매증권': '101',
+    '현금': '100',
+    '당좌예금': '102',
+    '외상매출금': '110',
+    '매출채권': '111',
+    '기계장치': '201',
+    '복리후생비': '301',
+    '보통예금': '103',
+    '차량운반구': '202',
+    '부가세대급금': '401',
+    '제품매출': '501',
+    '외상매입금': '210',
+    '미지급금': '211',
+    '부가세예수금': '402',
+    // ... 필요한 계정과목 추가
+  };
+
+  // 계정과목 입력 시 코드 자동 입력
+  function bindAccountAutoCode() {
+    document.querySelectorAll('#purchase-table input[name="account"]').forEach(accountInput => {
+      accountInput.addEventListener('input', function() {
+        const codeInput = accountInput.parentElement.previousElementSibling.querySelector('input[name="code"]');
+        const code = accountCodeMap[accountInput.value.trim()];
+        codeInput.value = code ? code : '';
+      });
+    });
+  }
+  bindAccountAutoCode();
+  // 줄 추가 시에도 바인딩 필요
+  const addRowBtn2 = document.getElementById('add-row');
+  if (addRowBtn2) {
+    addRowBtn2.addEventListener('click', () => {
+      setTimeout(() => {
+        bindAccountAutoCode();
+      }, 50);
+    });
+  }
   // 금액 입력 시 합계 자동 계산
   function updateJournalSums() {
     let debitSum = 0;
