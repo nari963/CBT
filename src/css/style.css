@@ -1,3 +1,45 @@
+/* 분개 연습 테이블 반응형 개선 */
+@media (max-width: 900px) {
+  .exam-list table, .exam-list th, .exam-list td {
+    font-size: 0.95em;
+    padding: 0.3rem;
+  }
+  .exam-list th, .exam-list td {
+    min-width: 60px;
+    word-break: keep-all;
+  }
+  .exam-list input[type="text"], .exam-list input[type="number"] {
+    font-size: 1em;
+    padding: 0.4em 0.6em;
+    min-width: 40px;
+    box-sizing: border-box;
+  }
+  #journal-table, #purchase-table, #settlement-table {
+    width: 100%;
+    overflow-x: auto;
+    display: block;
+  }
+}
+
+@media (max-width: 600px) {
+  .exam-list table, .exam-list th, .exam-list td {
+    font-size: 0.9em;
+    padding: 0.2rem;
+  }
+  .exam-list th, .exam-list td {
+    min-width: 48px;
+  }
+  .exam-list input[type="text"], .exam-list input[type="number"] {
+    font-size: 0.95em;
+    padding: 0.3em 0.4em;
+    min-width: 32px;
+  }
+  #journal-table, #purchase-table, #settlement-table {
+    width: 100%;
+    overflow-x: auto;
+    display: block;
+  }
+}
 /* 금액 입력란 오른쪽 정렬 */
 .amount-input {
   text-align: right;

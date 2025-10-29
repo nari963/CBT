@@ -24,7 +24,7 @@
   <meta name="distribution" content="global">
   <meta name="rating" content="general">
   <meta name="format-detection" content="telephone=no">
-  <link rel="canonical" href="https://cbt00.netlify.app/purchase.html">
+  <link rel="canonical" href="https://cbt00.netlify.app/settlement.html">
   <meta name="theme-color" content="#ffffff">
   <meta name="application-name" content="">
   <meta name="msapplication-TileColor" content="#ffffff">
@@ -34,7 +34,7 @@
   <link rel="apple-touch-icon" href="/apple-touch-icon.png">
   <link rel="manifest" href="/site.webmanifest">
   <meta charset="UTF-8">
-  <title>매입매출 분개 연습</title>
+  <title>결산정리 분개 연습</title>
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -46,13 +46,13 @@
   <a href="term.html" style="font-size:0.95em;">용어맞추기</a>
   <a href="chapter.html" style="font-size:0.95em;">단원별문제풀이</a>
   <a href="general.html" style="font-size:0.95em;">일반전표문제연습</a>
-  <a href="purchase.html" class="active" style="font-size:0.95em;">매입매출전표연습</a>
-  <a href="settlement.html" style="font-size:0.95em;">결산정리</a>
+  <a href="purchase.html" style="font-size:0.95em;">매입매출전표연습</a>
+  <a href="settlement.html" class="active" style="font-size:0.95em;">결산정리</a>
     </nav>
   </header>
   <main class="main-layout">
     <section class="exam-list">
-      <h2>매입매출 분개 연습</h2>
+      <h2>결산정리 분개 연습</h2>
       <div style="margin-bottom:16px;">
         <label for="part-select" style="font-size:1.2em; margin-right:8px;">파트 선택: </label>
         <select id="part-select" style="font-size:1.2em; padding:8px 16px; min-width:120px;">
@@ -65,8 +65,8 @@
       </div>
       <div id="problem-box">
         <div id="problem-text">문제가 여기에 표시됩니다.</div>
-        <form id="purchase-form">
-            <table id="purchase-table" style="width:100%; border-collapse:collapse; margin-bottom:12px;">
+        <form id="settlement-form">
+            <table id="settlement-table" style="width:100%; border-collapse:collapse; margin-bottom:12px;">
               <thead>
                 <tr style="background:#e9ecef;">
                   <th style="width:60px;">월</th>
@@ -77,7 +77,7 @@
                   <th style="width:120px;">(대변) 금액</th>
                 </tr>
               </thead>
-              <tbody id="purchase-tbody">
+              <tbody id="settlement-tbody">
                 <!-- 5줄 기본 생성 -->
                 <tr>
                   <td><input type="text" name="month" style="width:100%;" maxlength="2" placeholder="월"></td>
@@ -135,17 +135,10 @@
         </form>
         <div id="result-box"></div>
       </div>
+      <div class="pagination" id="pagination-box" style="margin-top:1rem; text-align:center;"></div>
     </section>
     <aside class="sidebar">
-      <ul>
-        <li><a href="quiz.html" style="font-size:0.95em;">기출문제풀이</a></li>
-        <li><a href="ox.html" style="font-size:0.95em;">OX퀴즈</a></li>
-        <li><a href="term.html" style="font-size:0.95em;">용어맞추기</a></li>
-        <li><a href="chapter.html" style="font-size:0.95em;">단원별문제풀이</a></li>
-        <li><a href="general.html" style="font-size:0.95em;">일반전표문제연습</a></li>
-        <li><a href="purchase.html" class="active" style="font-size:0.95em;">매입매출전표연습</a></li>
-        <li><a href="settlement.html" style="font-size:0.95em;">결산정리</a></li>
-      </ul>
+      <!-- 사이드바 메뉴 삭제 -->
     </aside>
   </main>
   <footer>
@@ -153,6 +146,6 @@
       &copy; 2025 모두의 자격증 CBT. All rights reserved.
     </div>
   </footer>
-  <script src="js/purchase.js"></script>
+  <script src="js/settlement.js"></script>
 </body>
 </html>
