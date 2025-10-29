@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>CBT 회계 연습 사이트</title>
+  <link href="https://cbt00.netlify.app/" />
+  <updated>2025-10-29T00:00:00+09:00</updated>
+  <author>
+    <name>CBT 관리자</name>
+  </author>
+  <id>https://cbt00.netlify.app/</id>
+  <entry>
+    <title>기출문제풀이</title>
+    <link href="https://cbt00.netlify.app/quiz.html" />
+    <id>https://cbt00.netlify.app/quiz.html</id>
+    <updated>2025-10-29T00:00:00+09:00</updated>
+    <summary>최신 기출문제와 해설 제공</summary>
+  </entry>
+  <entry>
+    <title>OX퀴즈</title>
+    <link href="https://cbt00.netlify.app/ox.html" />
+    <id>https://cbt00.netlify.app/ox.html</id>
+    <updated>2025-10-29T00:00:00+09:00</updated>
+    <summary>회계 용어 및 개념 OX 퀴즈</summary>
+  </entry>
+  <entry>
+    <title>용어맞추기</title>
+    <link href="https://cbt00.netlify.app/term.html" />
+    <id>https://cbt00.netlify.app/term.html</id>
+    <updated>2025-10-29T00:00:00+09:00</updated>
+    <summary>회계 용어 4지선다형 연습</summary>
+  </entry>
+  <entry>
+    <title>일반전표문제연습</title>
+    <link href="https://cbt00.netlify.app/general.html" />
+    <id>https://cbt00.netlify.app/general.html</id>
+    <updated>2025-10-29T00:00:00+09:00</updated>
+    <summary>일반 분개 실전 연습</summary>
+  </entry>
+  <entry>
+    <title>매입매출전표연습</title>
+    <link href="https://cbt00.netlify.app/purchase.html" />
+    <id>https://cbt00.netlify.app/purchase.html</id>
+    <updated>2025-10-29T00:00:00+09:00</updated>
+    <summary>매입매출 분개 실전 연습</summary>
+  </entry>
+  <entry>
+    <title>결산정리</title>
+    <link href="https://cbt00.netlify.app/settlement.html" />
+    <id>https://cbt00.netlify.app/settlement.html</id>
+    <updated>2025-10-29T00:00:00+09:00</updated>
+    <summary>결산 분개 실전 연습</summary>
+  </entry>
+</feed>
