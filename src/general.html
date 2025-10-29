@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta property="og:locale" content="ko_KR">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="">
+  <meta name="twitter:description" content="">
+  <meta name="twitter:image" content="">
+  <meta name="twitter:image:alt" content="">
+  <meta name="twitter:site" content="">
+  <meta name="twitter:creator" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="language" content="ko">
+  <meta name="distribution" content="global">
+  <meta name="rating" content="general">
+  <meta name="format-detection" content="telephone=no">
+  <link rel="canonical" href="https://cbt00.netlify.app/general.html">
+  <meta name="theme-color" content="#ffffff">
+  <meta name="application-name" content="">
+  <meta name="msapplication-TileColor" content="#ffffff">
+  <!-- apple-mobile-web-app-capable은 deprecated, 최신 권장 태그로 교체 -->
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="">
+  <link rel="icon" href="/favicon.ico" type="image/x-icon">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <!-- site.webmanifest 파일이 실제로 존재하지 않으면 아래 줄을 제거하거나, 파일을 생성해야 합니다. -->
+  <!-- <link rel="manifest" href="/site.webmanifest"> -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>일반전표문제연습 | 모두의 자격증 이론문제집 CBT</title>
+  <meta name="description" content="일반전표 분개 문제 연습. 기초, 일반, 심화, 랜덤 파트별로 분개 연습을 할 수 있습니다.">
+  <meta name="keywords" content="CBT, 자격증, 일반전표, 분개, 회계, 문제집, 연습">
+  <meta name="author" content="nariphong">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header>
+    <h1>모두의 자격증 이론문제집 CBT</h1>
+    <nav aria-label="주요 메뉴">
+      <a href="quiz.html" style="font-size:0.95em;">기출문제풀이</a>
+      <a href="ox.html" style="font-size:0.95em;">OX퀴즈</a>
+      <a href="term.html" style="font-size:0.95em;">용어맞추기</a>
+      <a href="chapter.html" style="font-size:0.95em;">단원별문제풀이</a>
+      <a href="general.html" class="active" style="font-size:0.95em;">일반전표문제연습</a>
+      <a href="purchase.html" style="font-size:0.95em;">매입매출전표연습</a>
+      <a href="settlement.html" style="font-size:0.95em;">결산정리</a>
+    </nav>
+  </header>
+  <main class="main-layout">
+    <section class="exam-list">
+      <h2>일반전표 분개 문제</h2>
+      <div style="margin-bottom:16px;">
+        <label for="part-select" style="font-size:1.2em; margin-right:8px;">파트 선택: </label>
+        <select id="part-select" style="font-size:1.2em; padding:8px 16px; min-width:120px;">
+          <option value="past">기출</option>
+          <option value="basic">기초</option>
+          <option value="normal">일반</option>
+          <option value="advanced">심화</option>
+          <option value="random">랜덤</option>
+        </select>
+      </div>
+      <div id="problem-box">
+        <div id="problem-text">문제가 여기에 표시됩니다.</div>
+        <form id="journal-form" autocomplete="off">
+          <fieldset style="border:none; padding:0; margin:0;">
+            <legend style="display:none;">분개 입력 폼</legend>
+            <table id="journal-table" style="width:100%; border-collapse:collapse; margin-bottom:12px;">
+              <thead>
+                <tr style="background:#e9ecef;">
+                  <th style="width:60px;">월</th>
+                  <th style="width:60px;">일</th>
+                  <th style="width:80px;">계정코드</th>
+                  <th style="width:160px;">계정과목</th>
+                  <th style="width:120px;">(차변) 금액</th>
+                  <th style="width:120px;">(대변) 금액</th>
+                </tr>
+              </thead>
+              <tbody id="journal-tbody">
+                <!-- 5줄 기본 생성 -->
+                <tr>
+                  <td><input type="text" name="month" style="width:100%;" maxlength="2" placeholder="월"></td>
+                  <td><input type="text" name="day" style="width:100%;" maxlength="2" placeholder="일"></td>
+                  <td><input type="text" name="code" style="width:100%;"></td>
+                  <td><input type="text" name="account" style="width:100%;"></td>
+                  <td><input type="text" name="debit" class="amount-input" style="width:100%; text-align:right;" oninput="this.value=this.value.replace(/[^\d]/g,''); if(this.value)this.value=Number(this.value.replace(/,/g,'')).toLocaleString('ko-KR');"></td>
+                  <td><input type="text" name="credit" class="amount-input" style="width:100%; text-align:right;" oninput="this.value=this.value.replace(/[^\d]/g,''); if(this.value)this.value=Number(this.value.replace(/,/g,'')).toLocaleString('ko-KR');"></td>
+                </tr>
+                <tr>
+                  <td><input type="text" name="month" style="width:100%;" maxlength="2" placeholder="월"></td>
+                  <td><input type="text" name="day" style="width:100%;" maxlength="2" placeholder="일"></td>
+                  <td><input type="text" name="code" style="width:100%;"></td>
+                  <td><input type="text" name="account" style="width:100%;"></td>
+                  <td><input type="text" name="debit" class="amount-input" style="width:100%; text-align:right;" oninput="this.value=this.value.replace(/[^\d]/g,''); if(this.value)this.value=Number(this.value.replace(/,/g,'')).toLocaleString('ko-KR');"></td>
+                  <td><input type="text" name="credit" class="amount-input" style="width:100%; text-align:right;" oninput="this.value=this.value.replace(/[^\d]/g,''); if(this.value)this.value=Number(this.value.replace(/,/g,'')).toLocaleString('ko-KR');"></td>
+                </tr>
+                <tr>
+                  <td><input type="text" name="month" style="width:100%;" maxlength="2" placeholder="월"></td>
+                  <td><input type="text" name="day" style="width:100%;" maxlength="2" placeholder="일"></td>
+                  <td><input type="text" name="code" style="width:100%;"></td>
+                  <td><input type="text" name="account" style="width:100%;"></td>
+                  <td><input type="text" name="debit" class="amount-input" style="width:100%; text-align:right;" oninput="this.value=this.value.replace(/[^\d]/g,''); if(this.value)this.value=Number(this.value.replace(/,/g,'')).toLocaleString('ko-KR');"></td>
+                  <td><input type="text" name="credit" class="amount-input" style="width:100%; text-align:right;" oninput="this.value=this.value.replace(/[^\d]/g,''); if(this.value)this.value=Number(this.value.replace(/,/g,'')).toLocaleString('ko-KR');"></td>
+                </tr>
+                <tr>
+                  <td><input type="text" name="month" style="width:100%;" maxlength="2" placeholder="월"></td>
+                  <td><input type="text" name="day" style="width:100%;" maxlength="2" placeholder="일"></td>
+                  <td><input type="text" name="code" style="width:100%;"></td>
+                  <td><input type="text" name="account" style="width:100%;"></td>
+                  <td><input type="text" name="debit" class="amount-input" style="width:100%; text-align:right;" oninput="this.value=this.value.replace(/[^\d]/g,''); if(this.value)this.value=Number(this.value.replace(/,/g,'')).toLocaleString('ko-KR');"></td>
+                  <td><input type="text" name="credit" class="amount-input" style="width:100%; text-align:right;" oninput="this.value=this.value.replace(/[^\d]/g,''); if(this.value)this.value=Number(this.value.replace(/,/g,'')).toLocaleString('ko-KR');"></td>
+                </tr>
+                <tr>
+                  <td><input type="text" name="month" style="width:100%;" maxlength="2" placeholder="월"></td>
+                  <td><input type="text" name="day" style="width:100%;" maxlength="2" placeholder="일"></td>
+                  <td><input type="text" name="code" style="width:100%;"></td>
+                  <td><input type="text" name="account" style="width:100%;"></td>
+                  <td><input type="text" name="debit" class="amount-input" style="width:100%; text-align:right;" oninput="this.value=this.value.replace(/[^\d]/g,''); if(this.value)this.value=Number(this.value.replace(/,/g,'')).toLocaleString('ko-KR');"></td>
+                  <td><input type="text" name="credit" class="amount-input" style="width:100%; text-align:right;" oninput="this.value=this.value.replace(/[^\d]/g,''); if(this.value)this.value=Number(this.value.replace(/,/g,'')).toLocaleString('ko-KR');"></td>
+                </tr>
+              </tbody>
+              <tfoot>
+                <tr style="background:#f4f6fa; font-weight:bold;">
+                  <td colspan="4" style="text-align:right;">합계</td>
+                  <td id="debit-sum" style="text-align:right;">0</td>
+                  <td id="credit-sum" style="text-align:right;">0</td>
+                </tr>
+              </tfoot>
+            </table>
+            <button type="button" id="add-row">줄추가</button>
+            <div style="margin: 16px 0;">
+              <button type="submit">제출</button>
+            </div>
+          </fieldset>
+        </form>
+        <div id="result-box" aria-live="polite"></div>
+      </div>
+    </section>
+    <aside class="sidebar">
+      <!-- 필요시 사이드바 내용 추가 -->
+    </aside>
+  </main>
+  <footer>
+    <p>&copy; nariphong</p>
+  </footer>
+  <script src="js/general.js" defer></script>
+</body>
+</html>

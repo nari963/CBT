@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta property="og:locale" content="ko_KR">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="">
+  <meta name="twitter:description" content="">
+  <meta name="twitter:image" content="">
+  <meta name="twitter:image:alt" content="">
+  <meta name="twitter:site" content="">
+  <meta name="twitter:creator" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="language" content="ko">
+  <meta name="distribution" content="global">
+  <meta name="rating" content="general">
+  <meta name="format-detection" content="telephone=no">
+  <link rel="canonical" href="https://cbt00.netlify.app/chapter.html">
+  <meta name="theme-color" content="#ffffff">
+  <meta name="application-name" content="">
+  <meta name="msapplication-TileColor" content="#ffffff">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="">
+  <link rel="icon" href="/favicon.ico" type="image/x-icon">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>단원별문제풀이 | 모두의 자격증 이론문제집 CBT</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .chapter-flex { display: flex; gap: 2rem; align-items: flex-start; }
+    .chapter-container { max-width: 600px; background: #fff; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); padding: 2rem; }
+    .chapter-left-fixed { position: sticky; top: 100px; z-index: 2; background: #fff; flex: 1; }
+    .chapter-select { width: 100%; padding: 0.7rem; font-size: 1.1rem; border-radius: 6px; border: 1px solid #ccc; margin-bottom: 1.5rem; }
+    .chapter-list { margin-bottom: 2rem; }
+    .chapter-list button { display: block; width: 100%; margin-bottom: 0.5rem; padding: 0.7rem; font-size: 1rem; border-radius: 6px; border: 1px solid #005bac; background: #f6f6f6; color: #005bac; cursor: pointer; }
+    .chapter-list button.active { background: #005bac; color: #fff; }
+    .chapter-question { font-size: 1.2rem; margin-bottom: 1.5rem; }
+    .chapter-btns { display: flex; gap: 2rem; justify-content: center; margin-bottom: 1.5rem; }
+    .chapter-btn { width: 120px; height: 60px; font-size: 1.1rem; border-radius: 8px; border: none; background: #005bac; color: #fff; cursor: pointer; transition: background 0.2s; }
+    .chapter-btn:hover { background: #003e7a; }
+    .chapter-result { font-size: 1.1rem; font-weight: bold; margin-bottom: 1rem; }
+    .chapter-explanation { margin-top: 1rem; color: #333; background: #f6f6f6; border-radius: 6px; padding: 1rem; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>모두의 자격증 이론문제집 CBT</h1>
+    <nav>
+    <a href="quiz.html" style="font-size:0.95em;">기출문제풀이</a>
+    <a href="ox.html" style="font-size:0.95em;">OX퀴즈</a>
+    <a href="term.html" style="font-size:0.95em;">용어맞추기</a>
+    <a href="chapter.html" class="active" style="font-size:0.95em;">단원별문제풀이</a>
+    <a href="general.html" style="font-size:0.95em;">일반전표문제연습</a>
+    <a href="purchase.html" style="font-size:0.95em;">매입매출전표연습</a>
+    <a href="settlement.html" style="font-size:0.95em;">결산정리</a>
+    </nav>
+  </header>
+  <main>
+    <div class="chapter-flex">
+      <div class="chapter-container chapter-left-fixed">
+        <h2>단원별문제풀이</h2>
+        <select id="part-select" class="chapter-select"></select>
+        <div id="chapter-list" class="chapter-list"></div>
+        <div id="chapter-box"></div>
+        <div id="chapter-result" class="chapter-result"></div>
+        <div class="chapter-nav" style="margin-top:2rem; display:flex; justify-content:space-between;">
+          <button id="chapter-prev">이전</button>
+          <span id="chapter-page" style="font-size:1.1rem; font-weight:bold; margin:0 1rem;"></span>
+          <button id="chapter-next">다음</button>
+        </div>
+      </div>
+      <div style="min-width:180px;">
+        <h3 style="margin-bottom:0.5rem;">풀이 결과</h3>
+        <table id="chapter-status-table" style="width:100%; border-collapse:collapse; font-size:0.95rem;">
+          <thead>
+            <tr><th style="border-bottom:1px solid #ccc;">번호</th><th style="border-bottom:1px solid #ccc;">결과</th></tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+  <script src="js/chapter.js"></script>
+</body>
+</html>
